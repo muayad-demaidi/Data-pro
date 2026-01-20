@@ -7,22 +7,28 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, F
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 
+# Determine Database URL
+# Priority: 1. Environment Variable, 2. Streamlit Secrets (handled by env var injection usually), 3. SQLite Fallback
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if not DATABASE_URL:
-    # Simple fallback for Streamlit Cloud without complex imports
-    import streamlit as st
     try:
-        DATABASE_URL = st.secrets.get("DATABASE_URL")
-    except:
+        # Try retrieving from st.secrets if available, but wrap in Try/Except to avoid crashes
+        import streamlit as st
+        # Check if secrets are loaded/available
+        if hasattr(st, "secrets") and "DATABASE_URL" in st.secrets:
+            DATABASE_URL = st.secrets["DATABASE_URL"]
+    except (ImportError, FileNotFoundError, AttributeError):
+        # Pass silently if streamlit is not initialized or secrets dict is missing
         pass
 
 if not DATABASE_URL:
-    # Use SQLite for local/demo purposes
+    # Final Fallback to SQLite
     DATABASE_URL = "sqlite:///./datapro.db"
     print("WARNING: No DATABASE_URL found. Using local SQLite database.")
 
-if "sqlite" in DATABASE_URL:
+# Create Engine
+if "sqlite" in str(DATABASE_URL):
     engine = create_engine(
         DATABASE_URL, 
         connect_args={"check_same_thread": False},
