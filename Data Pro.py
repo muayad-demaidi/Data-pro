@@ -8,7 +8,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from datetime import datetime
 from models import init_db, get_db, authenticate_user, create_user, user_to_dict
-from utils.ui import apply_theme, card_container, end_card
+from app_utils.ui import apply_theme, card_container, end_card
 
 # Page Config
 st.set_page_config(
