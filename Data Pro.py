@@ -1,5 +1,11 @@
 import streamlit as st
 import pandas as pd
+import sys
+import os
+
+# Add current directory to path to ensure imports work
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from datetime import datetime
 from models import init_db, get_db, authenticate_user, create_user, user_to_dict
 from utils.ui import apply_theme, card_container, end_card
