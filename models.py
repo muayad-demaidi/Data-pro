@@ -1,6 +1,5 @@
 import os
 import hashlib
-import secrets
 import bcrypt
 from datetime import datetime, timedelta
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, Float, JSON, Boolean, ForeignKey
