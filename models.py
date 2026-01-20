@@ -9,14 +9,12 @@ from sqlalchemy.orm import sessionmaker, relationship
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
-# Fallback to SQLite if no DATABASE_URL is provided (Deployment Friendly)
 if not DATABASE_URL:
-    # Check if we are checking via st.secrets first (Streamlit specific)
+    # Simple fallback for Streamlit Cloud without complex imports
+    import streamlit as st
     try:
-        from streamlit.runtime.secrets import secrets
-        if "DATABASE_URL" in secrets:
-            DATABASE_URL = secrets["DATABASE_URL"]
-    except ImportError:
+        DATABASE_URL = st.secrets.get("DATABASE_URL")
+    except:
         pass
 
 if not DATABASE_URL:
@@ -24,11 +22,14 @@ if not DATABASE_URL:
     DATABASE_URL = "sqlite:///./datapro.db"
     print("WARNING: No DATABASE_URL found. Using local SQLite database.")
 
-engine = create_engine(
-    DATABASE_URL, 
-    connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {},
-    pool_pre_ping=True
-)
+if "sqlite" in DATABASE_URL:
+    engine = create_engine(
+        DATABASE_URL, 
+        connect_args={"check_same_thread": False},
+        pool_pre_ping=True
+    )
+else:
+    engine = create_engine(DATABASE_URL, pool_pre_ping=True, pool_recycle=300)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
