@@ -9,10 +9,26 @@ from sqlalchemy.orm import sessionmaker, relationship
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
+# Fallback to SQLite if no DATABASE_URL is provided (Deployment Friendly)
 if not DATABASE_URL:
-    raise RuntimeError("DATABASE_URL environment variable is not set. Please configure a PostgreSQL database.")
+    # Check if we are checking via st.secrets first (Streamlit specific)
+    try:
+        from streamlit.runtime.secrets import secrets
+        if "DATABASE_URL" in secrets:
+            DATABASE_URL = secrets["DATABASE_URL"]
+    except ImportError:
+        pass
 
-engine = create_engine(DATABASE_URL, pool_pre_ping=True, pool_recycle=300)
+if not DATABASE_URL:
+    # Use SQLite for local/demo purposes
+    DATABASE_URL = "sqlite:///./datapro.db"
+    print("WARNING: No DATABASE_URL found. Using local SQLite database.")
+
+engine = create_engine(
+    DATABASE_URL, 
+    connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {},
+    pool_pre_ping=True
+)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
