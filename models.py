@@ -304,3 +304,20 @@ def get_admin_stats(db):
         'total_analyses': total_analyses,
         'total_chats': total_chats
     }
+
+
+def user_to_dict(user):
+    """Convert SQLAlchemy User object to dictionary to avoid DetachedInstanceError"""
+    if user is None:
+        return None
+    return {
+        'id': user.id,
+        'email': user.email,
+        'username': user.username,
+        'full_name': user.full_name,
+        'subscription_type': user.subscription_type,
+        'is_admin': user.is_admin,
+        'analysis_count': user.analysis_count,
+        'created_at': user.created_at,
+        'last_login': user.last_login
+    }
