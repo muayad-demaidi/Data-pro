@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from utils.ui import apply_theme, card_container, end_card, neon_metric
-from utils.data_loader import load_file
+from app_utils.ui import apply_theme, card_container, end_card, neon_metric
+from app_utils.data_loader import load_file
 from models import (
     get_db, save_dataset_record, find_similar_datasets, 
     increment_analysis_count, get_user_limits

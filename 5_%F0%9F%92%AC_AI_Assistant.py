@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from utils.ui import apply_theme, card_container, end_card
+from app_utils.ui import apply_theme, card_container, end_card
 from ai_assistant import chat_about_data, get_model
 from models import get_user_limits, save_chat_message, get_db
 

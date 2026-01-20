@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from utils.ui import apply_theme, card_container, end_card, neon_metric
+from app_utils.ui import apply_theme, card_container, end_card, neon_metric
 from data_cleaner import get_data_quality_score, clean_data
 from visualizations import create_missing_values_chart
 

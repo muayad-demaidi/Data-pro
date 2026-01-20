@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from utils.ui import apply_theme, card_container, end_card, neon_metric
+from app_utils.ui import apply_theme, card_container, end_card, neon_metric
 from data_analyzer import (
     get_numeric_stats, get_categorical_stats, find_strong_correlations, detect_outliers
 )
