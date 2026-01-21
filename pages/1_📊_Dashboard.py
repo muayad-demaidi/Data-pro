@@ -8,8 +8,8 @@ from models import (
     get_db, save_dataset_record, find_similar_datasets, 
     increment_analysis_count, get_user_limits
 )
-from data_cleaner import clean_data, get_data_quality_score, detect_column_types
-from data_analyzer import generate_summary_report
+from app_utils.data_cleaner import clean_data, get_data_quality_score, detect_column_types
+from app_utils.data_analyzer import generate_summary_report
 import hashlib
 import math
 
